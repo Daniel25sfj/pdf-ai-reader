@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { extractTextFromPdf, chunkText } from "@/lib/pdf";
 import { getEmbedding } from "@/lib/embeddings";
-import { supabaseServer } from "@/lib/supabaseServer";
+import { getSupabaseServer } from "@/lib/supabaseServer";
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,7 +23,8 @@ export async function POST(req: NextRequest) {
     const chunks = chunkText(fullText);
 
     // 3) Create document entry
-    const { data: doc, error: docErr } = await supabaseServer
+    const supabase = getSupabaseServer();
+    const { data: doc, error: docErr } = await supabase
       .from("documents")
       .insert({ name: file.name })
       .select()
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
       const content = chunks[i];
       const embedding = await getEmbedding(content);
 
-      await supabaseServer.from("document_chunks").insert({
+      await supabase.from("document_chunks").insert({
         document_id: doc.id,
         chunk_index: i,
         content,

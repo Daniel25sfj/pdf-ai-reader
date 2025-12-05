@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getEmbedding } from "@/lib/embeddings";
-import { supabaseServer } from "@/lib/supabaseServer";
+import { getSupabaseServer } from "@/lib/supabaseServer";
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,7 +14,8 @@ export async function POST(req: NextRequest) {
     const queryEmbedding = await getEmbedding(query);
 
     // 2. Kjør similarity-søk i Supabase
-    const { data, error } = await supabaseServer.rpc("match_document_chunks", {
+    const supabase = getSupabaseServer();
+    const { data, error } = await (supabase as any).rpc("match_document_chunks", {
       query_embedding: queryEmbedding,
       match_count,
       filter_document_id: document_id ?? null,

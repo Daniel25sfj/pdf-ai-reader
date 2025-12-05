@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getEmbedding } from "@/lib/embeddings";
-import { supabaseServer } from "@/lib/supabaseServer";
+import { getSupabaseServer } from "@/lib/supabaseServer";
 import OpenAI from "openai";
 
 type MatchChunk = {
@@ -23,7 +23,8 @@ export async function POST(req: NextRequest) {
     const queryEmbedding = await getEmbedding(query);
 
     // 2. Finn relevante chunks
-    const { data: matches, error } = await supabaseServer.rpc(
+    const supabase = getSupabaseServer();
+    const { data: matches, error } = await (supabase as any).rpc(
       "match_document_chunks",
       {
         query_embedding: queryEmbedding,

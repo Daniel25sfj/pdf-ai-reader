@@ -1,7 +1,8 @@
-import { supabaseServer } from "@/lib/supabaseServer";
+import { getSupabaseServer } from "@/lib/supabaseServer";
 
 export async function GET() {
-  const { data, error } = await supabaseServer
+  const supabase = getSupabaseServer();
+  const { data, error } = await supabase
     .from("nods_page")
     .select("*")
     .limit(1);
