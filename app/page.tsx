@@ -6,22 +6,34 @@ export default function Home() {
   const [uploadResult, setUploadResult] = useState("");
   const [query, setQuery] = useState("");
   const [answer, setAnswer] = useState("");
+  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // ---- UPLOAD PDF ------------------------------------------
   async function upload() {
     if (!file) return;
 
-    const fd = new FormData();
-    fd.append("file", file);
+    setUploading(true);
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      body: fd,
-    });
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
 
-    const data = await res.json();
-    setUploadResult(JSON.stringify(data, null, 2));
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: fd,
+      });
+
+      const data = await res.json();
+      setUploadResult(JSON.stringify(data, null, 2));
+    } catch (error) {
+      console.error("Upload error:", error);
+      setUploadResult(
+        "Det oppstod en feil under opplasting. Prøv igjen eller sjekk konsollen."
+      );
+    } finally {
+      setUploading(false);
+    }
   }
 
   // ---- ASK AI ----------------------------------------------
@@ -83,10 +95,32 @@ export default function Home() {
 
             <button
               onClick={upload}
-              disabled={!file}
+              disabled={!file || uploading}
               className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Upload &amp; Process
+              {uploading && (
+                <svg
+                  className="mr-2 h-4 w-4 animate-spin text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  />
+                </svg>
+              )}
+              {uploading ? "Laster opp..." : "Upload & Process"}
             </button>
 
             {uploadResult && (
