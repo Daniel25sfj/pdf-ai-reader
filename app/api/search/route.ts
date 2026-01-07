@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Kjør similarity-søk i Supabase
     const supabase = getSupabaseServer();
-    const { data, error } = await (supabase as any).rpc("match_document_chunks", {
+    const { data, error } = await supabase.rpc("match_document_chunks", {
       query_embedding: queryEmbedding,
       match_count,
       filter_document_id: document_id ?? null,

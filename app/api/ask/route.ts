@@ -7,6 +7,17 @@ type MatchChunk = {
   content: string;
 };
 
+// CORS headers
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });
@@ -67,14 +78,20 @@ ${contextText}
 
     const answer = aiRes.choices[0].message.content;
 
-    return NextResponse.json({
-      ok: true,
-      answer,
-      chunks_used: matches,
-    });
+    return NextResponse.json(
+      {
+        ok: true,
+        answer,
+        chunks_used: matches,
+      },
+      { headers: corsHeaders }
+    );
   } catch (err: unknown) {
-    console.error(err);
+    console.error("Ask API error:", err);
     const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: message },
+      { status: 500, headers: corsHeaders }
+    );
   }
 }
