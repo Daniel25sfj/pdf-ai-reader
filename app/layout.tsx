@@ -53,7 +53,7 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 text-white antialiased`}
         >
           <Navbar />
           {children}

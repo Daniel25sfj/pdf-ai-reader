@@ -1,12 +1,22 @@
+"use client";
+import { SignedOut } from "@clerk/nextjs";
+
 export default function Footer() {
   return (
-    <footer className="h-[76px] bg-gray-800 text-white flex items-center justify-center">
-      <div className="container mx-auto text-center">
-        <p>
-          &copy; {new Date().getFullYear()} PDF AI Assistant. All rights
-          reserved.
-        </p>
-      </div>
-    </footer>
+    <SignedOut>
+      <footer className="border-t border-white/10 bg-black/50 text-white">
+        <div className="mx-auto flex min-h-[80px] max-w-6xl flex-col items-center justify-center gap-3 px-4 py-6 text-center sm:flex-row sm:justify-between">
+          <p className="text-sm text-gray-300">
+            &copy; {new Date().getFullYear()} PDF AI Assistant. All rights
+            reserved.
+          </p>
+          <div className="flex items-center gap-4 text-xs text-gray-400">
+            <span>Secure by design</span>
+            <span className="hidden sm:inline">•</span>
+            <span>Built for fast answers</span>
+          </div>
+        </div>
+      </footer>
+    </SignedOut>
   );
 }

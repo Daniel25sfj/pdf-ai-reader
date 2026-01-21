@@ -16,23 +16,24 @@ export default function Navbar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="border-b border-white/10 bg-black/40 backdrop-blur-sm">
+    <nav className="sticky top-0 z-50 border-b border-white/10 bg-black/60 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
+        <div className="flex h-16 items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-linear-to-br from-blue-500 via-indigo-500 to-purple-500 shadow-lg" />
             <Link
               href="/"
-              className="text-xl font-semibold text-white hover:text-gray-300 transition"
+              className="text-lg md:text-xl font-semibold text-white hover:text-gray-200 transition"
             >
               PDF AI Assistant
             </Link>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="hidden md:flex items-center gap-2 rounded-full bg-white/5 p-1 ring-1 ring-white/10">
             <Link
               href="/"
-              className={`text-sm font-medium transition px-3 py-2 rounded-md ${
+              className={`text-sm font-medium transition px-4 py-2 rounded-full ${
                 isActive("/")
-                  ? "text-white bg-white/10"
+                  ? "text-white bg-white/15 shadow-sm"
                   : "text-gray-300 hover:text-white"
               }`}
             >
@@ -40,9 +41,9 @@ export default function Navbar() {
             </Link>
             <Link
               href="/about"
-              className={`text-sm font-medium transition px-3 py-2 rounded-md ${
+              className={`text-sm font-medium transition px-4 py-2 rounded-full ${
                 isActive("/about")
-                  ? "text-white bg-white/10"
+                  ? "text-white bg-white/15 shadow-sm"
                   : "text-gray-300 hover:text-white"
               }`}
             >
@@ -50,18 +51,24 @@ export default function Navbar() {
             </Link>
             <Link
               href="/contact"
-              className={`text-sm font-medium transition px-3 py-2 rounded-md ${
+              className={`text-sm font-medium transition px-4 py-2 rounded-full ${
                 isActive("/contact")
-                  ? "text-white bg-white/10"
+                  ? "text-white bg-white/15 shadow-sm"
                   : "text-gray-300 hover:text-white"
               }`}
             >
               Contact
             </Link>
+          </div>
+          <div className="flex items-center gap-2">
             <SignedOut>
-              <SignInButton />
+              <SignInButton>
+                <button className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10">
+                  Sign In
+                </button>
+              </SignInButton>
               <SignUpButton>
-                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm px-4 py-2 cursor-pointer hover:bg-[#5a3ae6] transition">
+                <button className="rounded-full bg-linear-to-r from-blue-500 to-purple-500 px-4 py-2 text-sm font-semibold text-white shadow-lg transition hover:from-blue-400 hover:to-purple-400">
                   Sign Up
                 </button>
               </SignUpButton>
